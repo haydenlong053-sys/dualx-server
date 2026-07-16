@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false" debug="false">
+    <springProperty scope="context" name="appName" source="spring.application.name" defaultValue="dualx-api"/>
+    <springProperty scope="context" name="rootLevel" source="logging.level.root" defaultValue="info"/>
+    <springProperty scope="context" name="appLevel" source="logging.level.com.app" defaultValue="info"/>
+    <springProperty scope="context" name="logDir" source="logging.file.path" defaultValue="./logs"/>
+
+    <property name="maxHistory" value="14"/>
+    <property name="maxFileSize" value="50MB"/>
+    <property name="totalSizeCap" value="2GB"/>
+    <property name="consolePattern"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %magenta([%thread]) %cyan(%logger{36}) - %msg%n%ex{short}"/>
+    <property name="filePattern"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [${appName}] [%thread] %logger{60} - %msg%n%ex"/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="UTF-8">
+            <pattern>${consolePattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="app-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logDir}/${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logDir}/archive/${appName}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>${filePattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="error-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logDir}/${appName}-error.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logDir}/archive/${appName}-error.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>${filePattern}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.app" level="${appLevel}"/>
+    <logger name="com.baomidou" level="warn"/>
+    <logger name="org.mybatis" level="warn"/>
+    <logger name="org.springframework" level="warn"/>
+    <logger name="org.apache.catalina" level="warn"/>
+    <logger name="org.apache.tomcat" level="warn"/>
+    <logger name="com.zaxxer.hikari" level="warn"/>
+
+    <springProfile name="dev">
+        <root level="${rootLevel}">
+            <appender-ref ref="console"/>
+            <appender-ref ref="app-file"/>
+            <appender-ref ref="error-file"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="test,prod,prod-task,uat,test02">
+        <root level="${rootLevel}">
+            <appender-ref ref="console"/>
+            <appender-ref ref="app-file"/>
+            <appender-ref ref="error-file"/>
+        </root>
+    </springProfile>
+</configuration>

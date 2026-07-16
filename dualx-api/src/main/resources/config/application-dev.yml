@@ -1,0 +1,69 @@
+spring:
+  ai:
+    openai:
+      base-url: 'https://api.deepseek.com'
+      api-key: '${OPENAI_API_KEY:}'
+      chat:
+        options:
+          model: 'deepseek-v4-flash'
+          temperature: 0.2
+
+  cloud:
+    sentinel:
+      # 是否开启Sentinel客户端
+      enabled: false
+      # 启动时立即初始化并向控制台发送心跳
+      eager: false
+      # Web资源按请求方法区分，例如 GET:/api/account/exist
+      http-method-specify: true
+      # false=每个URL资源独立统计；true=统一到同一个Web上下文
+      web-context-unify: false
+      transport:
+        # Sentinel控制台地址；本地控制台为 http://127.0.0.1:8858/
+        dashboard: 127.0.0.1:8858
+        # 应用本地启动一个HTTP端口，用于接收控制台推送规则
+        port: 8200
+        # Dashboard用Docker启动时，127.0.0.1会指向容器自己；这里填Docker能访问到的宿主机真实IP
+        client-ip: 192.168.0.116
+      filter:
+        # 开启Spring MVC请求资源采集和限流拦截
+        enabled: false
+        # Sentinel拦截器顺序，放在业务鉴权和安全签名之后
+        order: 10
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/dualx_dev?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useLegacyDatetimeCode=false
+    username: root
+    password: '${DB_PASSWORD}'
+
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      database: 1
+      password: '${REDIS_PASSWORD:}'
+      lettuce:
+        pool:
+          max-active: 20
+          max-idle: 16
+          max-wait: 1000ms
+          min-idle: 10
+
+logging:
+  level:
+    root: warn
+    com.app: info
+
+
+com.app:
+  userNumber: 20
+  #文件上传路径
+  upload:
+    filePath: D:\img\fai
+    getHttpImg: 'http://127.0.0.1:9090/img/'
+
+  task:
+    enable: false
+    cron:
+      sampleCronTask: '0 */1 * * * ?'     # 示例cron任务

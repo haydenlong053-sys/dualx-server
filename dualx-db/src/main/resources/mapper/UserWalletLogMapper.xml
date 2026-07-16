@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.db.mapper.UserWalletLogMapper">
+    <insert id="insertCoinLog">
+        INSERT INTO ${tableName}
+        (
+            flag,
+            member_id,
+            wallet_id,
+            type,
+            coin_name,
+            op_type,
+            op_remark,
+            op_value,
+            op_before,
+            op_after,
+            ext_remark
+        )
+        VALUES
+        (
+            IFNULL(#{log.flag}, 1),
+            #{log.memberId},
+            #{log.walletId},
+            #{log.type},
+            #{log.coinName},
+            #{log.opType},
+            #{log.opRemark},
+            #{log.opValue},
+            #{log.opBefore},
+            #{log.opAfter},
+            #{log.extRemark}
+        )
+    </insert>
+</mapper>

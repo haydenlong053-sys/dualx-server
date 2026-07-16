@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<body>
+<div class="news-title" th:text=${title}>${title}</div>
+<div class="news-time" th:text="${time}">${time}</div>
+<div class="news-html" th:utext=${html}>
+    ${html}
+</div>
+</body>
+
+<style type="text/css">
+    .news-title {
+      font-size: 42px;
+      font-family: Arial;
+      font-weight: bold;
+      line-height: 56px;
+      color: #323232;
+      opacity: 1;
+      margin-top: 20px;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+    .news-time {
+      font-size: 24px;
+      font-family: PingFangSC-Regular;
+      line-height: 26px;
+      color: #959595;
+      opacity: 1;
+      margin-top: 20px;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+    .news-html {
+      font-size: 32px;
+      font-family: PingFangSC-Regular;
+      line-height: 50px;
+      color: #323232;
+      opacity: 1;
+      margin-top: 30px;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 14px;
+    }
+</style>
+</html>

@@ -1,0 +1,113 @@
+server:
+  port: 8201
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: dualx-api
+  mvc:
+    async:
+      request-timeout: 2m
+  jackson:
+    time-zone: UTC
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      write-dates-as-timestamps: false
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  thymeleaf:
+    prefix: classpath:/templates/webHtml
+    suffix: .html
+    content-type: text/html
+  # 资源信息配置
+  messages:
+    basename: i18n/messages # 国际化资源文件路径
+    fallback-to-system-locale: true # 回退到系统Locale
+    encoding: UTF-8 # 编码格式
+    cache-duration: 3600 # 缓存持续时间（秒）
+
+mybatis:
+  configuration:
+  #默认是不允许自动转换驼峰命名，得自己设置为true
+  map-underscore-to-camel-case: true
+  #扫描所有mybatis的xml文件
+  mapper-locations: classpath:mapper/*.xml
+mybatis-plus:
+  configuration:
+    #默认是允许自动转换驼峰命名
+    map-underscore-to-camel-case: true
+    # 使用日志框架输出SQL，是否打印由 logging.level 控制
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /_swagger-ui-disabled.html
+    enabled: true
+  packages-to-scan: com.app.web.api
+  paths-to-match: /api/**
+  group-configs:
+    - group: 默认接口
+      packages-to-scan: com.app.web.api
+      paths-to-match: /api/**
+
+knife4j:
+  enable: true
+  setting:
+    # 开启动态参数，Knife4j调试页的“请求头部”允许手动新增/填写Header
+    enable-dynamic-parameter: true
+    # 缓存调试参数，刷新页面后保留上一次填写的Header和Body
+    enable-request-cache: true
+
+sa-token:
+  # Token名称；前端登录后把返回的token放到这个请求头里
+  token-name: Authorization
+  # Token有效期，单位秒；604800=7天，-1=永久有效
+  timeout: 604800
+  # Token临时有效期，单位秒；-1表示不启用无操作过期
+  active-timeout: -1
+  # 是否允许同一账号多端同时登录；true=允许，false=新登录会挤掉旧登录
+  is-concurrent: false
+  # 多端登录时是否共用同一个Token；false=每次登录生成新的Token
+  is-share: false
+  # Token风格；uuid简单稳定，适合替代原JWT字符串
+  token-style: uuid
+  # 是否从请求头读取Token
+  is-read-header: true
+  # 是否从Cookie读取Token；接口项目默认关闭，避免浏览器Cookie干扰
+  is-read-cookie: false
+  # 是否从请求参数/body读取Token；默认关闭，避免Token出现在URL或表单里
+  is-read-body: false
+  # 是否在初始化时打印Sa-Token横幅
+  is-print: false
+  # 是否打印Sa-Token内部操作日志
+  is-log: false
+
+com.app:
+  secure-request:
+    # 是否开启安全请求校验；true=带@SecureRequest的接口会校验签名、时间戳和随机数
+    enabled: true
+    # 时间戳请求头名称；前端传当前时间戳，支持秒或毫秒
+    timestamp-header: X-Timestamp
+    # 随机数请求头名称；每次请求必须不同，后端写入Redis防重放
+    nonce-header: X-Nonce
+    # 签名请求头名称；签名算法为 HMAC-SHA256
+    sign-header: X-Sign
+    # 请求时间允许误差，单位秒；超过该窗口直接拒绝
+    timestamp-window-seconds: 10
+    # nonce在Redis里的有效期，单位秒；有效期内重复使用同一个nonce会被拒绝
+    nonce-expire-seconds: 3000
+    # 请求签名密钥；前端按 method + path + timestamp + nonce + bodyHash 生成签名
+    sign-secret: '${APP_SIGN_SECRET}'
+    # RSA公钥；给前端加密 @SecureField 字段使用
+    rsa-public-key: '${APP_RSA_PUBLIC_KEY}'
+    # RSA私钥；后端自动解密 @SecureField 字段，生产环境建议用环境变量注入
+    rsa-private-key: '${APP_RSA_PRIVATE_KEY}'
+
+  upload:
+    filePath: '/data/upload'

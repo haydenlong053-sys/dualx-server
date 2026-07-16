@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title></title>
+    <link href="webjars/css/chunk-41ae0dec.999bc9fd.css" rel="prefetch">
+    <link href="webjars/css/chunk-cdc6d52e.9612b987.css" rel="prefetch">
+    <link href="webjars/js/chunk-069eb437.355c4fb0.js" rel="prefetch">
+    <link href="webjars/js/chunk-0d102d5a.b2bddffc.js" rel="prefetch">
+    <link href="webjars/js/chunk-0fd67716.d57e2c41.js" rel="prefetch">
+    <link href="webjars/js/chunk-260d712a.390177fe.js" rel="prefetch">
+    <link href="webjars/js/chunk-2d0af44e.392afcd6.js" rel="prefetch">
+    <link href="webjars/js/chunk-2d0bd799.eb48b7f1.js" rel="prefetch">
+    <link href="webjars/js/chunk-2d0da532.591ad7fc.js" rel="prefetch">
+    <link href="webjars/js/chunk-3b888a65.8737ce4f.js" rel="prefetch">
+    <link href="webjars/js/chunk-3ec4aaa8.a79d19f8.js" rel="prefetch">
+    <link href="webjars/js/chunk-41ae0dec.7cdc472b.js" rel="prefetch">
+    <link href="webjars/js/chunk-589faee0.5bfd1708.js" rel="prefetch">
+    <link href="webjars/js/chunk-735c675c.5b409314.js" rel="prefetch">
+    <link href="webjars/js/chunk-adb9e944.2c7f24fe.js" rel="prefetch">
+    <link href="webjars/js/chunk-cdc6d52e.5c46a8aa.js" rel="prefetch">
+    <link href="webjars/css/app.1824bac3.css" rel="preload" as="style">
+    <link href="webjars/css/chunk-vendors.f24a310a.css" rel="preload" as="style">
+    <link href="webjars/js/app.c31badf5.js" rel="preload" as="script">
+    <link href="webjars/js/chunk-vendors.d51cf6f8.js" rel="preload" as="script">
+    <link href="webjars/css/chunk-vendors.f24a310a.css" rel="stylesheet">
+    <link href="webjars/css/app.1824bac3.css" rel="stylesheet">
+</head>
+<body>
+<noscript>
+    <strong>Please ensure that the static resources of Knife4j are released to avoid being intercepted by the back-end security framework!. Enable it to continue.</strong>
+</noscript>
+<div id="app"></div>
+<script src="webjars/js/chunk-vendors.d51cf6f8.js"></script>
+<script src="webjars/js/app.c31badf5.js"></script>
+<script>
+    (function () {
+        var DB_NAME = 'localforage';
+        var STORE_NAME = 'keyvaluepairs';
+        var CACHE_KEY = 'Knife4jGitApiVersionCaches';
+        var SECURITY_KEY_PREFIX = 'Knife4jSecurityParams';
+        var RELOAD_KEY = 'knife4j-default-headers-reloaded';
+        var DEFAULT_HEADERS = [
+            {key: 'Authorization', type: 'apiKey', in: 'header', name: 'Authorization', value: '', id: 'Authorization', schema: null},
+            {key: 'X-Timestamp', type: 'apiKey', in: 'header', name: 'X-Timestamp', value: '', id: 'X-Timestamp', schema: null},
+            {key: 'X-Nonce', type: 'apiKey', in: 'header', name: 'X-Nonce', value: '', id: 'X-Nonce', schema: null},
+            {key: 'X-Sign', type: 'apiKey', in: 'header', name: 'X-Sign', value: '', id: 'X-Sign', schema: null}
+        ];
+
+        function openDb() {
+            return new Promise(function (resolve, reject) {
+                var request = indexedDB.open(DB_NAME);
+                request.onerror = function () {
+                    reject(request.error);
+                };
+                request.onsuccess = function () {
+                    resolve(request.result);
+                };
+            });
+        }
+
+        function getItem(db, key) {
+            return new Promise(function (resolve, reject) {
+                var tx = db.transaction(STORE_NAME, 'readonly');
+                var request = tx.objectStore(STORE_NAME).get(key);
+                request.onerror = function () {
+                    reject(request.error);
+                };
+                request.onsuccess = function () {
+                    resolve(request.result);
+                };
+            });
+        }
+
+        function setItem(db, key, value) {
+            return new Promise(function (resolve, reject) {
+                var tx = db.transaction(STORE_NAME, 'readwrite');
+                var request = tx.objectStore(STORE_NAME).put(value, key);
+                request.onerror = function () {
+                    reject(request.error);
+                };
+                request.onsuccess = function () {
+                    resolve();
+                };
+            });
+        }
+
+        function mergeHeaders(headers) {
+            var result = Array.isArray(headers) ? headers.slice() : [];
+            DEFAULT_HEADERS.forEach(function (header) {
+                var exists = result.some(function (item) {
+                    return item && item.key === header.key && item.name === header.name && item.in === header.in;
+                });
+                if (!exists) {
+                    result.push(Object.assign({}, header));
+                }
+            });
+            return result;
+        }
+
+        function readInstanceIds(caches) {
+            if (!Array.isArray(caches)) {
+                return [];
+            }
+            return caches
+                .filter(function (item) {
+                    return item && item.id;
+                })
+                .map(function (item) {
+                    return item.id;
+                });
+        }
+
+        async function syncDefaultHeaders() {
+            var db = await openDb();
+            var caches = await getItem(db, CACHE_KEY);
+            var instanceIds = readInstanceIds(caches);
+            if (!instanceIds.length) {
+                db.close();
+                return false;
+            }
+            for (var i = 0; i < instanceIds.length; i++) {
+                var storageKey = SECURITY_KEY_PREFIX + instanceIds[i];
+                var headers = await getItem(db, storageKey);
+                await setItem(db, storageKey, mergeHeaders(headers));
+            }
+            db.close();
+            return true;
+        }
+
+        var times = 0;
+        var timer = setInterval(function () {
+            times++;
+            syncDefaultHeaders().then(function (success) {
+                if (!success) {
+                    return;
+                }
+                clearInterval(timer);
+                if (!sessionStorage.getItem(RELOAD_KEY)) {
+                    sessionStorage.setItem(RELOAD_KEY, '1');
+                    window.location.reload();
+                }
+            }).catch(function () {
+                if (times > 20) {
+                    clearInterval(timer);
+                }
+            });
+            if (times > 20) {
+                clearInterval(timer);
+            }
+        }, 500);
+    })();
+</script>
+</body>
+</html>

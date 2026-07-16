@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.db.mapper.UserMapper">
+
+    <select id="fineUserBuAmount" resultType="com.app.db.entity.User">
+        <![CDATA[
+        SELECT
+            u.id,
+            SUM(uw.balance) AS amount
+        FROM
+            `user` u
+                LEFT JOIN
+            user_wallet uw
+            ON
+                u.id = uw.member_id
+        WHERE
+            u.level = 0 AND u.create_time < #{dayTime}
+        GROUP BY
+            u.id
+        HAVING
+            amount <= 0
+            limit 1
+    ]]>
+    </select>
+
+
+    <select id="findUserIdsByIds" resultType="java.lang.Integer">
+        SELECT
+            CASE
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM user
+                    WHERE refer_id IN
+        <foreach collection="keyList" item="keys" open="(" separator="," close=")">
+            #{keys}
+        </foreach>
+        GROUP BY refer_id
+                    HAVING COUNT(*) > 1
+                ) THEN 1
+                ELSE 0
+                END AS result;
+    </select>
+
+    <select id="findAmountExcludeMax" resultType="java.math.BigDecimal">
+        SELECT IFNULL(SUM(u.team_amount),0) AS sum_amount_exclude_max
+        FROM `user` u
+                 LEFT JOIN (
+            SELECT id
+            FROM `user`
+            WHERE refer_id = #{userId}
+            ORDER BY (team_amount) DESC
+                LIMIT 1
+        ) AS max_user ON u.id = max_user.id
+        WHERE u.refer_id = #{userId} AND max_user.id IS NULL;
+    </select>
+
+
+    <select id="findAmountAiExcludeMax" resultType="java.math.BigDecimal">
+        SELECT IFNULL(SUM(u.team_amount),0) AS sum_amount_exclude_max
+        FROM `user` u
+                 LEFT JOIN (
+            SELECT id
+            FROM `user`
+            WHERE refer_id = #{userId}
+            ORDER BY (team_amount) DESC
+                LIMIT 1
+        ) AS max_user ON u.id = max_user.id
+        WHERE u.refer_id = #{userId} AND max_user.id IS NULL;
+    </select>
+    <select id="getIdList" resultType="java.lang.Integer">
+        select u.id from `user` u
+        where flag = 1
+        <if test="startId!=null"> and id>#{startId} </if>
+        <if test="minTeamAmount!=null"> and team_amount> #{minTeamAmount} </if>
+        order by u.id asc
+        limit #{size}
+    </select>
+</mapper>

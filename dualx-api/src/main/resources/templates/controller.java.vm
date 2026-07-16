@@ -1,0 +1,113 @@
+package ${package.Controller};
+
+import com.app.common.annotation.Login;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import jakarta.annotation.Resource;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import lombok.extern.slf4j.Slf4j;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.transaction.annotation.Transactional;
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+ 
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+import org.springframework.transaction.annotation.Isolation;
+ 
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Slf4j
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@RequestMapping("/api/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+ 
+#else
+@Tag(name = "$!{table.comment}")
+@Transactional(isolation = Isolation.READ_COMMITTED)
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+
+    @Resource
+    private ${table.serviceName} ${table.entityPath}Service;
+
+    /**
+     * 查询所有数据
+     * @return
+     */
+    @Login
+    @GetMapping
+    @Operation(summary = "查询$!{table.comment}列表")
+    public List<${entity}> findAll() {
+        return ${table.entityPath}Service.list();
+    }
+ 
+    /**
+     * 新增或者更新
+     * @return
+     */
+    @Login
+    @PostMapping
+    @Operation(summary = "添加或者更新$!{table.comment}")
+    public Map<String,Boolean> saveOrUpdate(@RequestBody ${entity} ${table.entityPath}) {
+        Map<String,Boolean> map = new HashMap<>();
+        map.put("result",true);
+        ${table.entityPath}Service.saveOrUpdate(${table.entityPath});
+        return map;
+    }
+ 
+
+    /**
+     * 根据id查询一条数据
+     * @return
+     */
+    @Login
+    @GetMapping("/{id}")
+    @Operation(summary = "根据ID查询$!{table.comment}")
+    public ${entity} findOne(@PathVariable Integer id) {
+        return ${table.entityPath}Service.getById(id);
+    }
+ 
+    /**
+     * 分页查询
+     * @return
+     */
+    @Login
+    @GetMapping("/page")
+    @Operation(summary = "分页查询$!{table.comment}")
+    public Page findPage(@RequestParam Integer pageNum,
+                                    @RequestParam Integer pageSize) {
+        QueryWrapper<${entity}> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("id");
+        Page page = ${table.entityPath}Service.page(new Page<>(pageNum, pageSize), queryWrapper);
+        return page;
+    }
+ 
+}
+ 
+#end
