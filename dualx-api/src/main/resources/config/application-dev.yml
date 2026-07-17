@@ -1,13 +1,24 @@
 spring:
-  ai:
-    openai:
-      base-url: 'https://api.deepseek.com'
-      api-key: '${OPENAI_API_KEY:}'
-      chat:
-        options:
-          model: 'deepseek-v4-flash'
-          temperature: 0.2
-
+  main:
+    allow-circular-references: true
+  rabbitmq:
+    host: 172.17.0.1
+    port: 5672
+    username: admin
+    password: admin123
+    virtual-host: /
+    connection-timeout: 15000
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    ssl:
+      enabled: false
+      algorithm: TLSv1.2
+    listener:
+      simple:
+        acknowledge-mode: manual
+        concurrency: 5
+        max-concurrency: 10
+        prefetch: 1
   cloud:
     sentinel:
       # 是否开启Sentinel客户端
@@ -54,7 +65,53 @@ logging:
   level:
     root: warn
     com.app: info
+contract:
+  bscChainRpcUrls:
+    - https://shared.us-east-1.getblock.io/2f7f8ff3a7b7471b96adad21d4ea6204
+    - https://shared.ap-southeast-1.getblock.io/5209fab94e254442bdacd729a309c210
+    - https://shared.ap-southeast-1.getblock.io/a9e6da80fced413a838396ded7cf8bf6
+    - https://shared.ap-southeast-1.getblock.io/cdaeeca2cb51485eaf5be261637f6781
+    - https://shared.us-east-1.getblock.io/c2ab717d3bd548b995a2be8adc3f9fa4
+    - https://bsc-mainnet.core.chainstack.com/29da5183b096e8c0123c1034b1ad9565
+  exchangeGradeWithdraw:
+    contract-withdraw-u: '0x17f4302FBE11dfc66b9eBE45D4b8919f042F7909'
+    contract-withdraw-oidc: '0x104448891D2ec72F7e223d3Ab05037105D3693ff'
 
+    contract-withdraw-u-us: '0x3E0bE21A46c7bc125708A76B6fDBD2ceE6F8CE28'
+    contract-withdraw-oidc-us: '0xbbC0dE6D08Adc360BC3fE91a91CABdaaf46ab74A'
+
+    contract-withdraw-u-product: '0xf09f5Ee8E8aD9f204abd6Ee6b5181B5851fAfbcb'
+    contract-withdraw-oidc-product: '0x4Ee8199e3Fe6FC73b826A83b565a8E66245DA9db'
+
+    execute-withdraw-address: '0x3943b46a44a27e9af1b29360c9e97db09646123d'
+    add-white-address: '0x965577a37ae83e38d0924aa69c6d69fcf9fe7cdd'
+    chain-id: 56
+app:
+  mq:
+    enabled: false
+  kms:
+    enabled: false
+  # odic代币合约，用来查询授权余额
+  withdrawTokenAddress: '0x3da14529289ea39368298657071033b0c81c0fa9'
+  # duon代币合约
+  duonTokenAddress: '0xbf66522E3f4d7E84D8d0Ce6A6cb0BDc1Cd9dA2B5'
+  #主网USDT合约
+  usdtContract: '0x55d398326f99059fF775485246999027B3197955'
+  imUrl: 'https://api-fat.seekweb4.net/'
+payment:
+  contract-address: '0x3CEd354dBC3771DFdC1931f9A165F1E1f105FcD8'
+  # 商城支付合约
+  payment-product: '0xF1a574744F8F8d770a94D65a091F03A2D6A7BcA1'
+  # 就是充值合约
+  old-contract-address: '0xc8924Fcd19f7712233dA656e89B81544Ad344762'
+  recharge-contract-address: '0xc1CB986eD00945f4aF8523Ca6CCaAEde22c13044'
+withdraw:
+  audit:
+    step: 4
+    server-name: audit-server-4
+chain:
+  event:
+    start-block: 98221129
 
 com.app:
   userNumber: 20

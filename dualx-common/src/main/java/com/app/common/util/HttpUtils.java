@@ -5,17 +5,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.*;
 import java.io.*;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.security.cert.X509Certificate;
 
 /**
  * 通用http发送方法
- * 
+ *
  * @author ruoyi
  */
 public class HttpUtils
@@ -182,6 +183,91 @@ public class HttpUtils
         return result.toString();
     }
 
+    /**
+     * 向指定 URL 发送POST方法的请求（JSON格式，带认证）
+     *
+     * @param url 发送请求的 URL
+     * @param jsonBody JSON格式的请求体
+     * @param base64Credentials Basic认证凭证
+     * @return 所代表远程资源的响应结果
+     */
+    public static String sendPostJson(String url, String jsonBody, String base64Credentials)
+    {
+        PrintWriter out = null;
+        BufferedReader in = null;
+        StringBuilder result = new StringBuilder();
+        try
+        {
+            log.info("sendPostJson - {}", url);
+            log.info("sendJsonBody - {}", jsonBody);
+            URL realUrl = new URL(url);
+            URLConnection conn = realUrl.openConnection();
+
+            // 设置请求头 - 关键：设置为 application/json
+            conn.setRequestProperty("accept", "application/json");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+
+            // 添加Basic认证
+            if (StringUtils.isNotBlank(base64Credentials))
+            {
+                conn.setRequestProperty("Authorization", "Basic " + base64Credentials);
+            }
+
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+
+            // 写入JSON数据
+            out = new PrintWriter(new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8));
+            out.print(jsonBody);
+            out.flush();
+
+            // 读取响应
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+            String line;
+            while ((line = in.readLine()) != null)
+            {
+                result.append(line);
+            }
+        }
+        catch (ConnectException e)
+        {
+            log.error("调用HttpUtils.sendPostJson ConnectException, url=" + url + ",jsonBody=" + jsonBody, e);
+        }
+        catch (SocketTimeoutException e)
+        {
+            log.error("调用HttpUtils.sendPostJson SocketTimeoutException, url=" + url + ",jsonBody=" + jsonBody, e);
+        }
+        catch (IOException e)
+        {
+            log.error("调用HttpUtils.sendPostJson IOException, url=" + url + ",jsonBody=" + jsonBody, e);
+        }
+        catch (Exception e)
+        {
+            log.error("调用HttpUtils.sendPostJson Exception, url=" + url + ",jsonBody=" + jsonBody, e);
+        }
+        finally
+        {
+            try
+            {
+                if (out != null)
+                {
+                    out.close();
+                }
+                if (in != null)
+                {
+                    in.close();
+                }
+            }
+            catch (IOException ex)
+            {
+                log.error("调用close Exception", ex);
+            }
+        }
+        return result.toString();
+    }
+
     public static String sendSSLPost(String url, String param)
     {
         StringBuilder result = new StringBuilder();
@@ -189,6 +275,8 @@ public class HttpUtils
         try
         {
             log.info("sendSSLPost - {}", urlNameString);
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, new TrustManager[] { new TrustAnyTrustManager() }, new java.security.SecureRandom());
             URL console = new URL(urlNameString);
             HttpsURLConnection conn = (HttpsURLConnection) console.openConnection();
             conn.setRequestProperty("accept", "*/*");
@@ -199,6 +287,8 @@ public class HttpUtils
             conn.setDoOutput(true);
             conn.setDoInput(true);
 
+            conn.setSSLSocketFactory(sc.getSocketFactory());
+            conn.setHostnameVerifier(new TrustAnyHostnameVerifier());
             conn.connect();
             InputStream is = conn.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -231,5 +321,33 @@ public class HttpUtils
             log.error("调用HttpsUtil.sendSSLPost Exception, url=" + url + ",param=" + param, e);
         }
         return result.toString();
+    }
+
+    private static class TrustAnyTrustManager implements X509TrustManager
+    {
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType)
+        {
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType)
+        {
+        }
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers()
+        {
+            return new X509Certificate[] {};
+        }
+    }
+
+    private static class TrustAnyHostnameVerifier implements HostnameVerifier
+    {
+        @Override
+        public boolean verify(String hostname, SSLSession session)
+        {
+            return true;
+        }
     }
 }

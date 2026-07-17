@@ -71,11 +71,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-model-openai</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
             <version>${spring.mybatis.plus}</version>
@@ -87,6 +82,11 @@
             <artifactId>velocity-engine-core</artifactId>
             <version>${apache.velocity.engine}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.web3j</groupId>
+            <artifactId>core</artifactId>
+            <version>${org.web3j.core}</version>
         </dependency>
 
     </dependencies>

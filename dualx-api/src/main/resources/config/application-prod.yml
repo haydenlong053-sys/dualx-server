@@ -1,4 +1,34 @@
 spring:
+  main:
+    allow-circular-references: true
+  rabbitmq:
+    host: b-ddc407cb-5671-4f40-8111-ec44f61d6fe9.mq.ap-east-1.on.aws
+    port: 5671
+    username: admin
+    password: 4ZBVdkfJW6QKhYc
+    virtual-host: /
+    ssl:
+      enabled: true
+      verify-hostname: false
+      algorithm: TLSv1.2
+    connection-timeout: 30000
+    requested-heartbeat: 30
+    # 连接工厂配置
+    cache:
+      channel:
+        size: 25
+      connection:
+        mode: CHANNEL
+    # 监听器配置
+    listener:
+      simple:
+        acknowledge-mode: manual
+        prefetch: 1
+        concurrency: 1
+        max-concurrency: 3
+        retry:
+          enabled: false
+        default-requeue-rejected: false
   cloud:
     sentinel:
       # 是否开启Sentinel客户端
@@ -45,7 +75,55 @@ logging:
   level:
     root: warn
     com.app: info
+app:
+  mq:
+    enabled: true
+  kms:
+    enabled: true
+  imUrl: 'https://api.seekweb4.ai/'
+  # odic代币合约，用来查询授权余额
+  withdrawTokenAddress: '0x3da14529289ea39368298657071033b0c81c0fa9'
+  # duon代币合约
+  duonTokenAddress: '0xcEAEff85a3758B5BbF81F6e48Bb2508546c62081'
+  #主网USDT合约
+  usdtContract: '0x55d398326f99059fF775485246999027B3197955'
+contract:
+  bscChainRpcUrls:
+    - https://shared.us-east-1.getblock.io/2f7f8ff3a7b7471b96adad21d4ea6204
+    - https://shared.ap-southeast-1.getblock.io/5209fab94e254442bdacd729a309c210
+    - https://shared.ap-southeast-1.getblock.io/a9e6da80fced413a838396ded7cf8bf6
+    - https://shared.ap-southeast-1.getblock.io/cdaeeca2cb51485eaf5be261637f6781
+    - https://shared.us-east-1.getblock.io/c2ab717d3bd548b995a2be8adc3f9fa4
+    - https://bsc-mainnet.core.chainstack.com/29da5183b096e8c0123c1034b1ad9565
+  exchangeGradeWithdraw:
+    contract-withdraw-u: '0x17f4302FBE11dfc66b9eBE45D4b8919f042F7909'
+    contract-withdraw-oidc: '0x104448891D2ec72F7e223d3Ab05037105D3693ff'
 
+    contract-withdraw-u-us: '0x03A048585aF828cAff386CcBfa23Fc8EC3bDCC27'
+    contract-withdraw-oidc-us: '0x19002bd6eab813ce567D5d116DA589B7ab99F289'
+
+    contract-withdraw-u-product: '0x22f52AFDfd412ea929A48a78feaF1c3Ee70B8998'
+    contract-withdraw-oidc-product: '0x76a3456a0C38979F315CccDd3248b3AF7259Fe4C'
+
+    execute-withdraw-address: '0x3943b46a44a27e9af1b29360c9e97db09646123d'
+    add-white-address: '0x965577a37ae83e38d0924aa69c6d69fcf9fe7cdd'
+    chain-id: 56
+payment:
+  #支付合约
+  contract-address: '0x3CEd354dBC3771DFdC1931f9A165F1E1f105FcD8'
+  # 商城支付合约
+  payment-product: '0xF1a574744F8F8d770a94D65a091F03A2D6A7BcA1'
+  #充值合约
+  old-contract-address: '0x260C4044749aF307B19112Ee1D90b3Ec8aedEE05'
+  #商城的充值合约
+  recharge-contract-address: '0xfa7d9e73550DB553E49C6B9513c66Da32E01F804'
+withdraw:
+  audit:
+    step: 4
+    server-name: audit-server-4
+chain:
+  event:
+    start-block: 94575203
 
 com.app:
   #一个IP可以注册账号限制

@@ -1,5 +1,6 @@
 package com.app.common.model;
 
+import com.app.common.enums.BaseResultCodeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -37,9 +38,20 @@ public class BaseResult<T> {
         return new BaseResult<>(0, "Success");
     }
 
+    public static BaseResult<?> success(String msg, Object data) {
+        return new BaseResult<>(0, msg, data);
+    }
+
     public static BaseResult<?> error(String msg) {
         return new BaseResult<>(400, msg);
     }
+    public static BaseResult<?> error(int code,String msg) {
+        return new BaseResult<>(code, msg);
+    }
+    public static BaseResult<?> error(BaseResultCodeEnum resultCodeEnum, String msg) {
+        return new BaseResult<>(resultCodeEnum.getCode(), msg);
+    }
+
 
     public static BaseResult<?> error() {
         return new BaseResult<>(400, "Failed");

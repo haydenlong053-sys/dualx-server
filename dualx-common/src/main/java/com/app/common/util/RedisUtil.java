@@ -2,7 +2,10 @@ package com.app.common.util;
 
 
 import com.app.common.SpringContextHolder;
-import lombok.extern.slf4j.Slf4j;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.*;
 
@@ -15,10 +18,24 @@ import java.util.concurrent.TimeUnit;
 /**
  * redis工具类
  */
-@Slf4j
 public class RedisUtil {
 
     private final static StringRedisTemplate stringRedisTemplate = SpringContextHolder.getBean("stringRedisTemplate");
+
+    /**
+     * Redis JSON 序列化/反序列化使用的 ObjectMapper：
+     * - 支持 java.time.*（LocalDateTime 等）
+     * - 以字符串形式读写日期时间，避免类型不兼容问题
+     */
+    private final static ObjectMapper objectMapper;
+
+    static {
+        objectMapper = new ObjectMapper();
+        // 注册 Java8 时间模块
+        objectMapper.registerModule(new JavaTimeModule());
+        // 使用可读的时间字符串，而不是时间戳数组
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    }
 
     /**
      * 匹配key
@@ -61,6 +78,13 @@ public class RedisUtil {
      */
     public static boolean persist(String key) {
         return stringRedisTemplate.persist(key);
+    }
+
+    /**
+     * 判断key是否存在
+     */
+    public static boolean hasKey(String key) {
+        return stringRedisTemplate.hasKey(key);
     }
 
     /////// String 操作
@@ -124,8 +148,7 @@ public class RedisUtil {
         try {
             Thread.sleep(timeMills);
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            log.warn("Redis锁等待被中断", e);
+            e.printStackTrace();
         }
     }
 
@@ -137,12 +160,70 @@ public class RedisUtil {
         op.increment(key, num);
     }
 
+
+    /**
+     * 将key的值加num
+     */
+    public static Double incrBy(String key, double num) {
+        ValueOperations<String, String> op = stringRedisTemplate.opsForValue();
+        return op.increment(key, num);
+    }
+
+    /**
+     * 将key的值加num
+     */
+    public static Double incrBy(String key, double num, long seconds) {
+        ValueOperations<String, String> op = stringRedisTemplate.opsForValue();
+        Double d = op.increment(key, num);
+        expire(key, seconds);
+        return d;
+    }
+
     /**
      * 获取key的值
      */
     public static String get(String key) {
         ValueOperations<String, String> op = stringRedisTemplate.opsForValue();
         return op.get(key);
+    }
+
+    /**
+     * 读取对象（反序列化 JSON）
+     */
+    public static <T> T getObject(String key, Class<T> clazz) {
+        String json = get(key);
+        if (json == null) {
+            return null;
+        }
+        try {
+            return objectMapper.readValue(json, clazz);
+        } catch (Exception e) {
+            throw new RuntimeException("反序列化失败: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 写入对象并设置过期时间（秒）
+     */
+    public static void setObject(String key, Object value, long seconds) {
+        try {
+            String json = objectMapper.writeValueAsString(value);
+            setEx(key, json, seconds);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("序列化失败: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 写入对象（序列化为 JSON）
+     */
+    public static void setObject(String key, Object value) {
+        try {
+            String json = objectMapper.writeValueAsString(value);
+            set(key, json);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("序列化失败: " + e.getMessage(), e);
+        }
     }
 
     /**
@@ -275,7 +356,7 @@ public class RedisUtil {
             mapOp.putAll(key, map);
             return true;
         } catch (Exception e) {
-            log.error("Redis hash批量写入失败, key={}", key, e);
+            e.printStackTrace();
             return false;
         }
     }
@@ -297,7 +378,7 @@ public class RedisUtil {
             }
             return true;
         } catch (Exception e) {
-            log.error("Redis hash批量写入并设置过期失败, key={}", key, e);
+            e.printStackTrace();
             return false;
         }
     }
@@ -316,7 +397,7 @@ public class RedisUtil {
             mapOp.put(key, item, value);
             return true;
         } catch (Exception e) {
-            log.error("Redis hash写入失败, key={}, item={}", key, item, e);
+            e.printStackTrace();
             return false;
         }
     }
@@ -339,7 +420,7 @@ public class RedisUtil {
             }
             return true;
         } catch (Exception e) {
-            log.error("Redis hash写入并设置过期失败, key={}, item={}", key, item, e);
+            e.printStackTrace();
             return false;
         }
     }
