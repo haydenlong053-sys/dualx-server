@@ -50,19 +50,11 @@ public class RabbitMqConfig {
 
 
 
-    /**
-     *  链上扫描到用户充值
-     */
-    public static final String CHAIN_SCAN_DEPOSIT_USER = "chain.scan.deposit.user";
-    /**
-     *  链上扫描到用户提现
-     */
-    public static final String CHAIN_SCAN_WITHDRAW_USER	 = "chain.scan.withdraw.user";
-    /**
-     *  链上扫描到用户支付
-     */
-    public static final String CHAIN_SCAN_PAYMENT_USER = "chain.scan.payment.user";
 
+     /**
+     * 提现记录同步 队列
+     */
+    public static final String BSC_WITHDRAWAL_LOG_QUEUE = "bsc.withdrawal.log.queue";
 
 
 
@@ -90,5 +82,10 @@ public class RabbitMqConfig {
     public Queue userRechargeSuccessQueue() {
         // 队列名, 持久化, 非独占, 不自动删除
         return new Queue(USER_RECHARGE_SUCCESS_QUEUE, true, false, false);
+    }
+
+    @Bean
+    public Queue bscWithdrawalLogQueue() {
+        return new Queue(BSC_WITHDRAWAL_LOG_QUEUE, true, false, false);
     }
 }
