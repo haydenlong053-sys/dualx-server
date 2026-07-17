@@ -12,9 +12,7 @@ import com.app.common.util.RedisUtil;
 import com.app.db.entity.BscWithdrawalLog;
 import com.app.db.entity.WithdrawReconcileLog;
 import com.app.db.mapper.WithdrawReconcileLogMapper;
-import com.app.web.config.WithdrawContractConfig;
 import com.app.web.service.IBscWithdrawalLogService;
-import com.app.web.service.IWithdrawContractKmsService;
 import com.app.web.service.IWithdrawReconcileLogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -28,7 +26,6 @@ import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Event;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.protocol.core.methods.response.EthLog;
-
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -46,12 +43,6 @@ public class WithdrawReconcileLogServiceImpl extends ServiceImpl<WithdrawReconci
 
     @Resource
     private IBscWithdrawalLogService bscWithdrawalLogService;
-
-    @Resource
-    private IWithdrawContractKmsService withdrawContractKmsService;
-
-    @Resource
-    private WithdrawContractConfig withdrawContractConfig;
 
 
     @Override

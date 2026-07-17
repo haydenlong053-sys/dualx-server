@@ -137,9 +137,6 @@ public class WithdrawContractConfig {
     @Value("${chain.event.confirm-blocks:30}")
     private Long chainEventConfirmBlocks;
 
-    @Value("${app.kms.enabled}")
-    private Boolean useKms;
-
     @Value("${app.mq.enabled}")
     private Boolean useMq;
 
