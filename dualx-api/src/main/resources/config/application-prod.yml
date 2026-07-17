@@ -54,16 +54,16 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_HOST:172.17.0.1}:${DB_PORT:63306}/${DB_NAME:dualx_prod}?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useLegacyDatetimeCode=false
-    username: '${DB_USERNAME:root}'
-    password: '${DB_PASSWORD}'
+    url: jdbc:mysql://${DB_HOST:172.17.0.1}:${DB_PORT:13306}/${DB_NAME:dualx_prod}?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useLegacyDatetimeCode=false
+    username: root
+    password: rootdbwebduwibc328#jhajd
 
   data:
     redis:
       host: 172.17.0.1
       port: 6379
-      database: 2
-      password: '${REDIS_PASSWORD}'
+      database: 0
+      password: webx36271822#4
       lettuce:
         pool:
           max-active: 20
