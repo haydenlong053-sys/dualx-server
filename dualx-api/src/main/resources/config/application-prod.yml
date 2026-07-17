@@ -94,39 +94,36 @@ contract:
     - https://shared.us-east-1.getblock.io/c2ab717d3bd548b995a2be8adc3f9fa4
     - https://bsc-mainnet.core.chainstack.com/29da5183b096e8c0123c1034b1ad9565
   exchangeGradeWithdraw:
+    #链桥提现合约  扫块需要
     contract-withdraw-u: '0x17f4302FBE11dfc66b9eBE45D4b8919f042F7909'
     contract-withdraw-oidc: '0x104448891D2ec72F7e223d3Ab05037105D3693ff'
 
+    #美区提现合约  扫块需要
     contract-withdraw-u-us: '0x03A048585aF828cAff386CcBfa23Fc8EC3bDCC27'
     contract-withdraw-oidc-us: '0x19002bd6eab813ce567D5d116DA589B7ab99F289'
 
+    #商城提现合约  扫块需要
     contract-withdraw-u-product: '0x22f52AFDfd412ea929A48a78feaF1c3Ee70B8998'
     contract-withdraw-oidc-product: '0x76a3456a0C38979F315CccDd3248b3AF7259Fe4C'
 
-    execute-withdraw-address: '0x3943b46a44a27e9af1b29360c9e97db09646123d'
-    add-white-address: '0x965577a37ae83e38d0924aa69c6d69fcf9fe7cdd'
     chain-id: 56
 payment:
   #支付合约
-  contract-address: '0x3CEd354dBC3771DFdC1931f9A165F1E1f105FcD8'
+  payment-contract: '0x3CEd354dBC3771DFdC1931f9A165F1E1f105FcD8'
   # 商城支付合约
-  payment-product: '0xF1a574744F8F8d770a94D65a091F03A2D6A7BcA1'
-  #充值合约
-  old-contract-address: '0x260C4044749aF307B19112Ee1D90b3Ec8aedEE05'
+  product-payment-contract: '0xF1a574744F8F8d770a94D65a091F03A2D6A7BcA1'
+recharge:
+  # 充值合约
+  recharge-contract: '0x260C4044749aF307B19112Ee1D90b3Ec8aedEE05'
   #商城的充值合约
-  recharge-contract-address: '0xfa7d9e73550DB553E49C6B9513c66Da32E01F804'
-withdraw:
-  audit:
-    step: 4
-    server-name: audit-server-4
+  product-recharge-contract: '0xfa7d9e73550DB553E49C6B9513c66Da32E01F804'
+
 chain:
   event:
-    start-block: 94575203
-
+    start-block: 110480243
 com.app:
   #一个IP可以注册账号限制
   userNumber: 2
-
   #文件上传路径
   upload:
     filePath: /data/upload/

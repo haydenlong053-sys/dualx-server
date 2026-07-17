@@ -202,7 +202,7 @@ public class RechargeReconcileLogServiceImpl extends ServiceImpl<RechargeReconci
         log.setChainBlockNumber(blockNumber);
         log.setChainLogIndex(logIndex);
         log.setChainTimestamp(new Date());
-        log.setChainContractAddress(withdrawContractConfig.getOldPaymentContractAddress().toLowerCase());
+        log.setChainContractAddress(withdrawContractConfig.getRechargeContractAddress().toLowerCase());
 
         log.setReconcileStatus(ReconcileStatusEnum.PENDING.getCode());
         log.setReconcileRemark("老支付链上数据已写入，等待业务对账");

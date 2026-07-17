@@ -38,18 +38,6 @@ public class WithdrawContractConfig {
     // ==================== 提现合约配置 ====================
 
     /**
-     * 添加白名单地址
-     */
-    @Value("${contract.exchangeGradeWithdraw.add-white-address}")
-    private String addWhiteAddress;
-
-    /**
-     * 执行提现地址
-     */
-    @Value("${contract.exchangeGradeWithdraw.execute-withdraw-address}")
-    private String executeWithdrawAddress;
-
-    /**
      * USDT提现合约地址
      */
     @Value("${contract.exchangeGradeWithdraw.contract-withdraw-u}")
@@ -99,27 +87,27 @@ public class WithdrawContractConfig {
     /**
      * 支付合约地址
      */
-    @Value("${payment.contract-address}")
+    @Value("${payment.payment-contract}")
     private String paymentContractAddress;
 
     /**
      * 商城的支付合约地址
      */
-    @Value("${payment.payment-product}")
+    @Value("${payment.product-payment-contract}")
     private String paymentProductContract;
 
 
     /**
      * 老支付合约地址（充值）
      */
-    @Value("${payment.old-contract-address}")
-    private String oldPaymentContractAddress;
+    @Value("${recharge.recharge-contract}")
+    private String rechargeContractAddress;
 
     /**
      * 商城的充值合约
      */
-    @Value("${payment.recharge-contract-address}")
-    private String rechargeContractAddress;
+    @Value("${recharge.product-recharge-contract}")
+    private String productRechargeContractAddress;
 
 
 

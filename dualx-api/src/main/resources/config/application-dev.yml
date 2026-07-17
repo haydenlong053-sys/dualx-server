@@ -82,9 +82,6 @@ contract:
 
     contract-withdraw-u-product: '0xf09f5Ee8E8aD9f204abd6Ee6b5181B5851fAfbcb'
     contract-withdraw-oidc-product: '0x4Ee8199e3Fe6FC73b826A83b565a8E66245DA9db'
-
-    execute-withdraw-address: '0x3943b46a44a27e9af1b29360c9e97db09646123d'
-    add-white-address: '0x965577a37ae83e38d0924aa69c6d69fcf9fe7cdd'
     chain-id: 56
 app:
   mq:
@@ -97,20 +94,18 @@ app:
   usdtContract: '0x55d398326f99059fF775485246999027B3197955'
   imUrl: 'https://api-fat.seekweb4.net/'
 payment:
-  contract-address: '0x3CEd354dBC3771DFdC1931f9A165F1E1f105FcD8'
+  #支付合约
+  payment-contract: '0x3CEd354dBC3771DFdC1931f9A165F1E1f105FcD8'
   # 商城支付合约
-  payment-product: '0xF1a574744F8F8d770a94D65a091F03A2D6A7BcA1'
-  # 就是充值合约
-  old-contract-address: '0xc8924Fcd19f7712233dA656e89B81544Ad344762'
-  recharge-contract-address: '0xc1CB986eD00945f4aF8523Ca6CCaAEde22c13044'
-withdraw:
-  audit:
-    step: 4
-    server-name: audit-server-4
+  product-payment-contract: '0xF1a574744F8F8d770a94D65a091F03A2D6A7BcA1'
+recharge:
+  # 充值合约
+  recharge-contract: '0xc8924Fcd19f7712233dA656e89B81544Ad344762'
+  #商城的充值合约
+  product-recharge-contract: '0xc1CB986eD00945f4aF8523Ca6CCaAEde22c13044'
 chain:
   event:
     start-block: 98221129
-
 com.app:
   userNumber: 20
   #文件上传路径

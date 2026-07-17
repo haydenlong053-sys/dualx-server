@@ -239,12 +239,12 @@ public class ChainEventScanServiceImpl implements IChainEventScanService {
 
 
         // 老支付合约（充值）
-        if (StringUtils.isNotBlank(withdrawContractConfig.getOldPaymentContractAddress())) {
-            allContractAddresses.add(withdrawContractConfig.getOldPaymentContractAddress());
-        }
-        //PRODUCT区的充值合约
         if (StringUtils.isNotBlank(withdrawContractConfig.getRechargeContractAddress())) {
             allContractAddresses.add(withdrawContractConfig.getRechargeContractAddress());
+        }
+        //PRODUCT区的充值合约
+        if (StringUtils.isNotBlank(withdrawContractConfig.getProductRechargeContractAddress())) {
+            allContractAddresses.add(withdrawContractConfig.getProductRechargeContractAddress());
         }
 
         if (allContractAddresses.isEmpty()) {
@@ -312,8 +312,8 @@ public class ChainEventScanServiceImpl implements IChainEventScanService {
                     }
                 } else if (OLD_PAYMENT_SIGNATURE.equalsIgnoreCase(eventSignature)) {
                     List<String> rechargeList = new ArrayList<>();
-                    rechargeList.add(withdrawContractConfig.getOldPaymentContractAddress().toLowerCase());
                     rechargeList.add(withdrawContractConfig.getRechargeContractAddress().toLowerCase());
+                    rechargeList.add(withdrawContractConfig.getProductRechargeContractAddress().toLowerCase());
                     if (rechargeList.contains(contractAddress.toLowerCase())) {
                         rechargeReconcileLogService.saveRechargeSuccess(logObject, OLD_PAYMENT_EVENT);
                     } else {
