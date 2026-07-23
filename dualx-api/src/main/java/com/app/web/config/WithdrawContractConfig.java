@@ -44,7 +44,7 @@ public class WithdrawContractConfig {
     private String contractWithdrawUsdt;
 
     /**
-     * ODIC提现合约地址
+     * DUALX提现合约地址
      */
     @Value("${contract.exchangeGradeWithdraw.contract-withdraw-oidc}")
     private String contractWithdrawOdic;
@@ -56,7 +56,7 @@ public class WithdrawContractConfig {
     private String usContractWithdrawUsdt;
 
     /**
-     * 美区的ODIC提现合约地址
+     * 美区的DUALX提现合约地址
      */
     @Value("${contract.exchangeGradeWithdraw.contract-withdraw-oidc-us}")
     private String usContractWithdrawOdic;
@@ -69,7 +69,7 @@ public class WithdrawContractConfig {
     private String productContractWithdrawUsdt;
 
     /**
-     * 美区的ODIC提现合约地址
+     * 美区的DUALX提现合约地址
      */
     @Value("${contract.exchangeGradeWithdraw.contract-withdraw-oidc-product}")
     private String productContractWithdrawOdic;
@@ -90,11 +90,6 @@ public class WithdrawContractConfig {
     @Value("${payment.payment-contract}")
     private String paymentContractAddress;
 
-    /**
-     * 商城的支付合约地址
-     */
-    @Value("${payment.product-payment-contract}")
-    private String paymentProductContract;
 
 
     /**

@@ -37,7 +37,7 @@ public class BscWithdrawStat implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate statDate;
 
-    @Schema(description ="合约类型：ODIC/U")
+    @Schema(description ="合约类型：DUALX/U")
     private String contractType;
 
     @Schema(description ="总出账笔数")

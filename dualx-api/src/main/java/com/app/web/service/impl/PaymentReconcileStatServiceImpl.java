@@ -64,11 +64,11 @@ public class PaymentReconcileStatServiceImpl extends ServiceImpl<PaymentReconcil
         List<Map<String, Object>> usdtResult = paymentReconcileStatMapper.statByToken(startTime, endTime, withdrawContractConfig.getUsdtContract());
         saveOrUpdateStat(statDate, 1, "USDT", usdtResult);
 
-        // 统计 ODIC
+        // 统计 DUALX
         List<Map<String, Object>> odicResult = paymentReconcileStatMapper.statByToken(startTime, endTime, withdrawContractConfig.getOdicContract());
-        saveOrUpdateStat(statDate, 2, "ODIC", odicResult);
+        saveOrUpdateStat(statDate, 2, "DUALX", odicResult);
 
-        // 统计 ODIC
+        // 统计 DUALX
         List<Map<String, Object>> duonResult = paymentReconcileStatMapper.statByToken(startTime, endTime, withdrawContractConfig.getDuonContract());
         saveOrUpdateStat(statDate, 3, "DUON", duonResult);
 

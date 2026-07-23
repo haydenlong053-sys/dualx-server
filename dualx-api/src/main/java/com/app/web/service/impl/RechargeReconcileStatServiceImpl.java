@@ -48,11 +48,11 @@ public class RechargeReconcileStatServiceImpl extends ServiceImpl<RechargeReconc
         List<Map<String, Object>> usdtResult = statMapper.statByToken(startTime, endTime, withdrawContractConfig.getUsdtContract());
         saveOrUpdateStat(statDate, 1, "USDT", usdtResult);
 
-        // 统计 ODIC
+        // 统计 DUALX
         List<Map<String, Object>> odicResult = statMapper.statByToken(startTime, endTime, withdrawContractConfig.getOdicContract());
-        saveOrUpdateStat(statDate, 2, "ODIC", odicResult);
+        saveOrUpdateStat(statDate, 2, "DUALX", odicResult);
 
-        // 统计 ODIC
+        // 统计 DUALX
         List<Map<String, Object>> duonResult = statMapper.statByToken(startTime, endTime, withdrawContractConfig.getDuonContract());
         saveOrUpdateStat(statDate, 3, "DUON", duonResult);
 

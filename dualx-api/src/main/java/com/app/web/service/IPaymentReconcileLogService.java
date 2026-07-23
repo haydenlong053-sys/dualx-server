@@ -70,7 +70,7 @@ public interface IPaymentReconcileLogService extends IService<PaymentReconcileLo
      * 查询代币兑换价格
      *
      * @param amount 数量
-     * @param status 1=ODIC转USDT，2=USDT转ODIC
+     * @param status 1=DUALX转USDT，2=USDT转DUALX
      * @param tokenAddress 代币合约地址
      * @return 兑换结果
      */

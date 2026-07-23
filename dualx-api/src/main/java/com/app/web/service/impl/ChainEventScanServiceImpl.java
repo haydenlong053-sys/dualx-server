@@ -199,7 +199,7 @@ public class ChainEventScanServiceImpl implements IChainEventScanService {
         // 提现合约
         if (StringUtils.isNotBlank(withdrawContractConfig.getContractWithdrawOdic())) {
             allContractAddresses.add(withdrawContractConfig.getContractWithdrawOdic());
-            withdrawAddressToType.put(withdrawContractConfig.getContractWithdrawOdic().toLowerCase(), "ODIC");
+            withdrawAddressToType.put(withdrawContractConfig.getContractWithdrawOdic().toLowerCase(), "DUALX");
         }
         if (StringUtils.isNotBlank(withdrawContractConfig.getContractWithdrawUsdt())) {
             allContractAddresses.add(withdrawContractConfig.getContractWithdrawUsdt());
@@ -208,7 +208,7 @@ public class ChainEventScanServiceImpl implements IChainEventScanService {
 
         if (StringUtils.isNotBlank(withdrawContractConfig.getUsContractWithdrawOdic())) {
             allContractAddresses.add(withdrawContractConfig.getUsContractWithdrawOdic());
-            withdrawAddressToType.put(withdrawContractConfig.getUsContractWithdrawOdic().toLowerCase(), "ODIC");
+            withdrawAddressToType.put(withdrawContractConfig.getUsContractWithdrawOdic().toLowerCase(), "DUALX");
         }
         if (StringUtils.isNotBlank(withdrawContractConfig.getUsContractWithdrawUsdt())) {
             allContractAddresses.add(withdrawContractConfig.getUsContractWithdrawUsdt());
@@ -217,7 +217,7 @@ public class ChainEventScanServiceImpl implements IChainEventScanService {
 
         if (StringUtils.isNotBlank(withdrawContractConfig.getProductContractWithdrawOdic())) {
             allContractAddresses.add(withdrawContractConfig.getProductContractWithdrawOdic());
-            withdrawAddressToType.put(withdrawContractConfig.getProductContractWithdrawOdic().toLowerCase(), "ODIC");
+            withdrawAddressToType.put(withdrawContractConfig.getProductContractWithdrawOdic().toLowerCase(), "DUALX");
         }
         if (StringUtils.isNotBlank(withdrawContractConfig.getProductContractWithdrawUsdt())) {
             allContractAddresses.add(withdrawContractConfig.getProductContractWithdrawUsdt());
@@ -229,13 +229,6 @@ public class ChainEventScanServiceImpl implements IChainEventScanService {
         if (StringUtils.isNotBlank(withdrawContractConfig.getPaymentContractAddress())) {
             allContractAddresses.add(withdrawContractConfig.getPaymentContractAddress());
         }
-        if (StringUtils.isNotBlank(withdrawContractConfig.getPaymentProductContract())) {
-            allContractAddresses.add(withdrawContractConfig.getPaymentProductContract());
-        }
-
-
-
-
 
 
         // 老支付合约（充值）
@@ -304,7 +297,6 @@ public class ChainEventScanServiceImpl implements IChainEventScanService {
                 } else if (PAY_SUCCESS_SIGNATURE.equalsIgnoreCase(eventSignature)) {
                     List<String> paymentList = new ArrayList<>();
                     paymentList.add(withdrawContractConfig.getPaymentContractAddress().toLowerCase());
-                    paymentList.add(withdrawContractConfig.getPaymentProductContract().toLowerCase());
                     if (paymentList.contains(contractAddress.toLowerCase())) {
                         paymentReconcileLogService.savePaySuccessEvent(logObject, PAY_SUCCESS_EVENT);
                     } else {

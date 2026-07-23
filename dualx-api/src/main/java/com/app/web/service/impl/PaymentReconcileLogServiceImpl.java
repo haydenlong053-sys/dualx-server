@@ -288,7 +288,7 @@ public class PaymentReconcileLogServiceImpl extends ServiceImpl<PaymentReconcile
             return BaseResult.error("数量必须大于0");
         }
         if (status == null || (status != 1 && status != 2)) {
-            return BaseResult.error("status参数错误，1=ODIC转USDT，2=USDT转ODIC");
+            return BaseResult.error("status参数错误，1=DUALX转USDT，2=USDT转DUALX");
         }
         String cacheKey = RedisConstants.TOKEN_PRICE_CACHE_PREFIX + withdrawTokenAddress.toLowerCase() + ":rate";
         String dealCacheKey = RedisConstants.PRICE_CACHE_PREFIX_DEAL + withdrawTokenAddress.toLowerCase() + ":rate";
@@ -321,10 +321,10 @@ public class PaymentReconcileLogServiceImpl extends ServiceImpl<PaymentReconcile
             }
             BigDecimal result;
             if (status == 1) {
-                // ODIC -> USDT
+                // DUALX -> USDT
                 result = amount.multiply(rate);
             } else {
-                // USDT -> ODIC
+                // USDT -> DUALX
                 result = amount.divide(rate, 18, RoundingMode.DOWN);
             }
             String resultStr = result.stripTrailingZeros().toPlainString();

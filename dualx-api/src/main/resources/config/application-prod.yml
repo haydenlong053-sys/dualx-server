@@ -80,7 +80,7 @@ app:
     enabled: true
   imUrl: 'https://api.seekweb4.ai/'
   # odic代币合约，用来查询授权余额
-  withdrawTokenAddress: '0x3da14529289ea39368298657071033b0c81c0fa9'
+  withdrawTokenAddress: '0x8cb3d40F9f200e9baC8d137B66cC956B093Ec8cB'
   # duon代币合约
   duonTokenAddress: '0xcEAEff85a3758B5BbF81F6e48Bb2508546c62081'
   #主网USDT合约
@@ -109,9 +109,7 @@ contract:
     chain-id: 56
 payment:
   #支付合约
-  payment-contract: '0x3CEd354dBC3771DFdC1931f9A165F1E1f105FcD8'
-  # 商城支付合约
-  product-payment-contract: '0xF1a574744F8F8d770a94D65a091F03A2D6A7BcA1'
+  payment-contract: '0x9bE47c4b52205F504885833691EbfD9969d39942'
 recharge:
   # 充值合约
   recharge-contract: '0x260C4044749aF307B19112Ee1D90b3Ec8aedEE05'
@@ -122,7 +120,7 @@ chain:
   event:
     start-block: 110480243
 com.app:
-  #一个IP可以注册账号限制
+  #一个IP可以注册账号限制 0x42e7d5fd7b2c71c32b9a99d1bfef9ad2df07b9a7
   userNumber: 2
   #文件上传路径
   upload:

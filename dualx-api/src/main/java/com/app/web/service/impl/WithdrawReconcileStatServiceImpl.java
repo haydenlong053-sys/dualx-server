@@ -53,18 +53,18 @@ public class WithdrawReconcileStatServiceImpl extends ServiceImpl<WithdrawReconc
         List<Map<String, Object>> bridgeUsdtStatus4Result = withdrawReconcileStatMapper.statByCoinId(startOfDay, endOfDay, "U", 3);
         saveOrUpdateStat(statDate, 1, "U", bridgeUsdtStatus4Result, 4);
 
-        // 链桥ODIC（老系统状态码1）
-        List<Map<String, Object>> bridgeOdicStatus1Result = withdrawReconcileStatMapper.statByCoinId(startOfDay, endOfDay, "ODIC", 1);
-        saveOrUpdateStat(statDate, 2, "ODIC", bridgeOdicStatus1Result, 1);
-        // IM 的ODIC
-        List<Map<String, Object>> bridgeOdicStatus2Result = withdrawReconcileStatMapper.statByCoinId(startOfDay, endOfDay, "ODIC", 2);
-        saveOrUpdateStat(statDate, 1, "ODIC", bridgeOdicStatus2Result, 2);
+        // 链桥DUALX（老系统状态码1）
+        List<Map<String, Object>> bridgeOdicStatus1Result = withdrawReconcileStatMapper.statByCoinId(startOfDay, endOfDay, "DUALX", 1);
+        saveOrUpdateStat(statDate, 2, "DUALX", bridgeOdicStatus1Result, 1);
+        // IM 的DUALX
+        List<Map<String, Object>> bridgeOdicStatus2Result = withdrawReconcileStatMapper.statByCoinId(startOfDay, endOfDay, "DUALX", 2);
+        saveOrUpdateStat(statDate, 1, "DUALX", bridgeOdicStatus2Result, 2);
         // 链桥老系统
-        List<Map<String, Object>> bridgeOdicStatus3Result = withdrawReconcileStatMapper.statByCoinId(startOfDay, endOfDay, "ODIC", 3);
-        saveOrUpdateStat(statDate, 2, "ODIC", bridgeOdicStatus3Result, 4);
+        List<Map<String, Object>> bridgeOdicStatus3Result = withdrawReconcileStatMapper.statByCoinId(startOfDay, endOfDay, "DUALX", 3);
+        saveOrUpdateStat(statDate, 2, "DUALX", bridgeOdicStatus3Result, 4);
         // 美区
-        List<Map<String, Object>> bridgeOdicStatus4Result = withdrawReconcileStatMapper.statByCoinId(startOfDay, endOfDay, "ODIC", 4);
-        saveOrUpdateStat(statDate, 2, "ODIC", bridgeOdicStatus4Result, 4);
+        List<Map<String, Object>> bridgeOdicStatus4Result = withdrawReconcileStatMapper.statByCoinId(startOfDay, endOfDay, "DUALX", 4);
+        saveOrUpdateStat(statDate, 2, "DUALX", bridgeOdicStatus4Result, 4);
         log.info("提现对账统计完成, statDate={}", statDate);
     }
 

@@ -16,7 +16,7 @@ public class ChainEventScanTask {
     private IChainEventScanService chainEventScanService;
 
     /**
-     * 扫块任务 会扫描 支付 充值 提（U/ODIC）合约并保存对账数据
+     * 扫块任务 会扫描 支付 充值 提（U/DUALX）合约并保存对账数据
      */
     @Scheduled(initialDelay = 15 * 1000, fixedDelay = 15 * 1000)
     public void scanChainEvents() {

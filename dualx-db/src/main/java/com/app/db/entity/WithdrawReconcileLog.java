@@ -108,7 +108,7 @@ public class WithdrawReconcileLog implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date chainTimestamp;
 
-    @Schema(description ="【链上】合约类型：ODIC/U")
+    @Schema(description ="【链上】合约类型：DUALX/U")
     private String chainContractType;
 
     @Schema(description ="【链上】合约地址")

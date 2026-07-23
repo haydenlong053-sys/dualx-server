@@ -87,7 +87,7 @@ app:
   mq:
     enabled: false
   # odic代币合约，用来查询授权余额
-  withdrawTokenAddress: '0x3da14529289ea39368298657071033b0c81c0fa9'
+  withdrawTokenAddress: '0x8cb3d40F9f200e9baC8d137B66cC956B093Ec8cB'
   # duon代币合约
   duonTokenAddress: '0xbf66522E3f4d7E84D8d0Ce6A6cb0BDc1Cd9dA2B5'
   #主网USDT合约
@@ -95,9 +95,7 @@ app:
   imUrl: 'https://api-fat.seekweb4.net/'
 payment:
   #支付合约
-  payment-contract: '0x3CEd354dBC3771DFdC1931f9A165F1E1f105FcD8'
-  # 商城支付合约
-  product-payment-contract: '0xF1a574744F8F8d770a94D65a091F03A2D6A7BcA1'
+  payment-contract: '0x9bE47c4b52205F504885833691EbfD9969d39942'
 recharge:
   # 充值合约
   recharge-contract: '0xc8924Fcd19f7712233dA656e89B81544Ad344762'
