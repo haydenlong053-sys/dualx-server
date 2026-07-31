@@ -158,8 +158,8 @@ public class PaymentReconcileLogServiceImpl extends ServiceImpl<PaymentReconcile
                 sendSuccess = true;
             } else if (BaseUtil.Base_HasValue(event.getSource()) && event.getSource() == 3) {
                 sendSuccess = sendIM(withdrawContractConfig.getImUrl() + "asset/wx/chainPay/purchaseSuccess", msg.toJSONString(), event);
-            } else if (BaseUtil.Base_HasValue(event.getSource()) && event.getSource() == 4) {
-                // 发送MQ给美区
+            } else if (BaseUtil.Base_HasValue(event.getSource()) && event.getSource() == 5) {
+                // 发送MQ给商城
                 withdrawMqProducer.send(msg.toJSONString(), RabbitMqConfig.USER_PURCHASE_SUCCESS_QUEUE_PRODUCT);
                 sendSuccess = true;
             } else {

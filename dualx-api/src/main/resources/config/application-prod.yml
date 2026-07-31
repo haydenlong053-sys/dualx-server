@@ -82,7 +82,7 @@ app:
   # odic代币合约，用来查询授权余额
   withdrawTokenAddress: '0x8cb3d40F9f200e9baC8d137B66cC956B093Ec8cB'
   # duon代币合约
-  duonTokenAddress: '0xcEAEff85a3758B5BbF81F6e48Bb2508546c62081'
+  duonTokenAddress: '0x8cb3d40F9f200e9baC8d137B66cC956B093Ec8cB'
   #主网USDT合约
   usdtContract: '0x55d398326f99059fF775485246999027B3197955'
 contract:
