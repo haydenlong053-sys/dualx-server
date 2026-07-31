@@ -109,7 +109,7 @@ contract:
     chain-id: 56
 payment:
   #支付合约
-  payment-contract: '0x9bE47c4b52205F504885833691EbfD9969d39942'
+  payment-contract: '0x88a38Ed9abE4a789C52eB59e56F5b15089CF5A9E'
 recharge:
   # 充值合约
   recharge-contract: '0x260C4044749aF307B19112Ee1D90b3Ec8aedEE05'
