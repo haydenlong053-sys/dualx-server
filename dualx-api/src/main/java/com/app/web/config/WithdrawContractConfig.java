@@ -90,7 +90,11 @@ public class WithdrawContractConfig {
     @Value("${payment.payment-contract}")
     private String paymentContractAddress;
 
-
+    /**
+     * 支付合约地址
+     */
+    @Value("${payment.product-contract}")
+    private String paymentProductContractAddress;
 
     /**
      * 老支付合约地址（充值）

@@ -229,6 +229,9 @@ public class ChainEventScanServiceImpl implements IChainEventScanService {
         if (StringUtils.isNotBlank(withdrawContractConfig.getPaymentContractAddress())) {
             allContractAddresses.add(withdrawContractConfig.getPaymentContractAddress());
         }
+        if (StringUtils.isNotBlank(withdrawContractConfig.getPaymentProductContractAddress())) {
+            allContractAddresses.add(withdrawContractConfig.getPaymentProductContractAddress());
+        }
 
 
         // 老支付合约（充值）
@@ -297,6 +300,7 @@ public class ChainEventScanServiceImpl implements IChainEventScanService {
                 } else if (PAY_SUCCESS_SIGNATURE.equalsIgnoreCase(eventSignature)) {
                     List<String> paymentList = new ArrayList<>();
                     paymentList.add(withdrawContractConfig.getPaymentContractAddress().toLowerCase());
+                    paymentList.add(withdrawContractConfig.getPaymentProductContractAddress().toLowerCase());
                     if (paymentList.contains(contractAddress.toLowerCase())) {
                         paymentReconcileLogService.savePaySuccessEvent(logObject, PAY_SUCCESS_EVENT);
                     } else {
