@@ -116,7 +116,7 @@ recharge:
   # 充值合约
   recharge-contract: '0x260C4044749aF307B19112Ee1D90b3Ec8aedEE05'
   #商城的充值合约
-  product-recharge-contract: '0xfa7d9e73550DB553E49C6B9513c66Da32E01F804'
+  product-recharge-contract: '0x8e1982a82cD755c482CdFeC2150D50Ca6c1378f8'
 
 chain:
   event:
