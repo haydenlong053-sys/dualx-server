@@ -49,30 +49,6 @@ public class WithdrawContractConfig {
     @Value("${contract.exchangeGradeWithdraw.contract-withdraw-oidc}")
     private String contractWithdrawOdic;
 
-    /**
-     * 美區的USDT提现合约地址
-     */
-    @Value("${contract.exchangeGradeWithdraw.contract-withdraw-u-us}")
-    private String usContractWithdrawUsdt;
-
-    /**
-     * 美区的DUALX提现合约地址
-     */
-    @Value("${contract.exchangeGradeWithdraw.contract-withdraw-oidc-us}")
-    private String usContractWithdrawOdic;
-
-
-    /**
-     * 美區的USDT提现合约地址
-     */
-    @Value("${contract.exchangeGradeWithdraw.contract-withdraw-u-product}")
-    private String productContractWithdrawUsdt;
-
-    /**
-     * 美区的DUALX提现合约地址
-     */
-    @Value("${contract.exchangeGradeWithdraw.contract-withdraw-oidc-product}")
-    private String productContractWithdrawOdic;
 
 
     /**

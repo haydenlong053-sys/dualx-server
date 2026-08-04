@@ -95,16 +95,8 @@ contract:
     - https://bsc-mainnet.core.chainstack.com/29da5183b096e8c0123c1034b1ad9565
   exchangeGradeWithdraw:
     #链桥提现合约  扫块需要
-    contract-withdraw-u: '0x17f4302FBE11dfc66b9eBE45D4b8919f042F7909'
-    contract-withdraw-oidc: '0x104448891D2ec72F7e223d3Ab05037105D3693ff'
-
-    #美区提现合约  扫块需要
-    contract-withdraw-u-us: '0x03A048585aF828cAff386CcBfa23Fc8EC3bDCC27'
-    contract-withdraw-oidc-us: '0x19002bd6eab813ce567D5d116DA589B7ab99F289'
-
-    #商城提现合约  扫块需要
-    contract-withdraw-u-product: '0x22f52AFDfd412ea929A48a78feaF1c3Ee70B8998'
-    contract-withdraw-oidc-product: '0x76a3456a0C38979F315CccDd3248b3AF7259Fe4C'
+    contract-withdraw-u: ''
+    contract-withdraw-oidc: '0xb24052C079e153bFcaC1F0D67c69437F77b62fD9'
 
     chain-id: 56
 payment:

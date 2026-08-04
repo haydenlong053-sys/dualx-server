@@ -170,12 +170,7 @@ public class BscWithdrawalLogServiceImpl extends ServiceImpl<BscWithdrawalLogMap
 
         addressMap.put("3_1", withdrawContractConfig.getContractWithdrawUsdt());    // 非US + BTC(1)
         addressMap.put("3_2", withdrawContractConfig.getContractWithdrawOdic());   // 非US + 其他币(非1)
-        // US 区域 (type = 4)
-        addressMap.put("4_1", withdrawContractConfig.getUsContractWithdrawUsdt());   // US + BTC(1)
-        addressMap.put("4_2", withdrawContractConfig.getUsContractWithdrawOdic()); // US + 其他币(非1)
 
-        addressMap.put("5_1", withdrawContractConfig.getProductContractWithdrawUsdt());   //暂时未定的系统
-        addressMap.put("5_2", withdrawContractConfig.getProductContractWithdrawOdic()); // 暂时未定的系统
 
 
         // 如果 key 不存在，返回默认值或抛出异常

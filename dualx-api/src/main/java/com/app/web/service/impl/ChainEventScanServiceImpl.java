@@ -206,23 +206,6 @@ public class ChainEventScanServiceImpl implements IChainEventScanService {
             withdrawAddressToType.put(withdrawContractConfig.getContractWithdrawUsdt().toLowerCase(), "U");
         }
 
-        if (StringUtils.isNotBlank(withdrawContractConfig.getUsContractWithdrawOdic())) {
-            allContractAddresses.add(withdrawContractConfig.getUsContractWithdrawOdic());
-            withdrawAddressToType.put(withdrawContractConfig.getUsContractWithdrawOdic().toLowerCase(), "DUALX");
-        }
-        if (StringUtils.isNotBlank(withdrawContractConfig.getUsContractWithdrawUsdt())) {
-            allContractAddresses.add(withdrawContractConfig.getUsContractWithdrawUsdt());
-            withdrawAddressToType.put(withdrawContractConfig.getUsContractWithdrawUsdt().toLowerCase(), "U");
-        }
-
-        if (StringUtils.isNotBlank(withdrawContractConfig.getProductContractWithdrawOdic())) {
-            allContractAddresses.add(withdrawContractConfig.getProductContractWithdrawOdic());
-            withdrawAddressToType.put(withdrawContractConfig.getProductContractWithdrawOdic().toLowerCase(), "DUALX");
-        }
-        if (StringUtils.isNotBlank(withdrawContractConfig.getProductContractWithdrawUsdt())) {
-            allContractAddresses.add(withdrawContractConfig.getProductContractWithdrawUsdt());
-            withdrawAddressToType.put(withdrawContractConfig.getProductContractWithdrawUsdt().toLowerCase(), "U");
-        }
 
 
         // 支付合约
