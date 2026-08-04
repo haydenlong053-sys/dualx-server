@@ -39,7 +39,11 @@ public class PaymentReconcileLogController {
     @GetMapping("/{orderId}")
     @Operation(summary = "根据ID查询")
     public JSONObject findOne(@PathVariable String orderId) {
-        return paymentReconcileLogService.getWithdrawalByOrderId(orderId, withdrawContractConfig.getPaymentProductContractAddress());
+        JSONObject result = paymentReconcileLogService.getWithdrawalByOrderId(orderId, withdrawContractConfig.getPaymentContractAddress());
+        if (result == null) {
+            return paymentReconcileLogService.getWithdrawalByOrderId(orderId, withdrawContractConfig.getPaymentProductContractAddress());
+        }
+        return result;
     }
 
     @PostMapping("/getPayByOrdCtr")
