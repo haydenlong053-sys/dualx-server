@@ -91,4 +91,5 @@ public interface IAccessControlService {
      */
     TransactionReceipt executeWithdraw(WithdrawRequest req, List<String> signaturesHex, String contractAddress, String privateKey) throws Exception;
 
+    void checkChain(String orderId);
 }

@@ -71,6 +71,7 @@ public class BscWithdrawalLogServiceImpl extends ServiceImpl<BscWithdrawalLogMap
         if (log == null) {
             result.put("hash", null);
             result.put("status", "1");
+            accessControlService.checkChain(orderId);
             return result;
         }
         // 构建返回结果

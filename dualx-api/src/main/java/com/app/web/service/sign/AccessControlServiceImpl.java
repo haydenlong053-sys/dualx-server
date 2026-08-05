@@ -1,6 +1,7 @@
 package com.app.web.service.sign;
 
 import com.app.common.dto.WithdrawRequest;
+import com.app.common.util.RedisUtil;
 import com.app.web.config.WithdrawContractConfig;
 import com.app.web.service.IAccessControlService;
 import jakarta.annotation.Resource;
@@ -26,7 +27,6 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.tx.response.PollingTransactionReceiptProcessor;
 import org.web3j.utils.Numeric;
-
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -312,6 +312,29 @@ public class AccessControlServiceImpl implements IAccessControlService {
                 Collections.emptyList()
         );
         return sendTransaction(function, contractAddress, privateKey);
+    }
+
+    @Override
+    public void checkChain(String orderId) {
+        try {
+            BigInteger status= getOrderStatus(new BigInteger(orderId), withdrawContractConfig.getContractWithdrawUsdt());
+            //说明发币成功了
+            if (status.compareTo(BigInteger.ONE) == 0) {
+                RedisUtil.setEx(orderId + "_status", "2", 24 * 60 * 60L);
+            }
+        } catch (Exception ignored) {
+
+        }
+        try {
+            BigInteger status= getOrderStatus(new BigInteger(orderId), withdrawContractConfig.getContractWithdrawOdic());
+            //说明发币成功了
+            if (status.compareTo(BigInteger.ONE) == 0) {
+                RedisUtil.setEx(orderId + "_status", "2", 24 * 60 * 60L);
+            }
+        } catch (Exception ignored) {
+
+        }
+
     }
 
 
