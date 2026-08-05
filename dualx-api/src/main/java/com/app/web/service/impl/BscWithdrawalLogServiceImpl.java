@@ -54,9 +54,10 @@ public class BscWithdrawalLogServiceImpl extends ServiceImpl<BscWithdrawalLogMap
 
 
     @Override
-    public Map<String, String> getWithdrawalStatusByOrderId(String orderId) {
+    public Map<String, String> getWithdrawalStatusByOrderId(String orderId,String contractAddress) {
         log.info("查询提现记录状态，订单号: {}", orderId);
         Map<String, String> result = new HashMap<>();
+        result.put("status","1");
         // 优先从Redis缓存查询
         if (RedisUtil.hasKey(orderId + "_status") && RedisUtil.hasKey(orderId + "_hash")) {
             result.put("hash", RedisUtil.get(orderId + "_hash"));
@@ -68,16 +69,22 @@ public class BscWithdrawalLogServiceImpl extends ServiceImpl<BscWithdrawalLogMap
         queryWrapper.eq(WithdrawReconcileLog::getBizOrderNumber, orderId).last("limit 1");
         WithdrawReconcileLog log = withdrawReconcileLogService.getOne(queryWrapper);
         // 未查询到记录
-        if (log == null) {
-            result.put("hash", null);
-            result.put("status", "1");
-            accessControlService.checkChain(orderId);
+        if (BaseUtil.Base_HasValue(log)) {
+            // 构建返回结果
+            String status = BaseUtil.Base_HasValue(log.getChainTxHash()) ? "2" : "1";
+            result.put("hash", log.getChainTxHash());
+            result.put("status", status);
             return result;
         }
-        // 构建返回结果
-        String status = BaseUtil.Base_HasValue(log.getChainTxHash()) ? "2" : "1";
-        result.put("hash", log.getChainTxHash());
-        result.put("status", status);
+        //直接查链上
+        try {
+            BigInteger status = accessControlService.getOrderStatus(new BigInteger(orderId), contractAddress);
+            //说明发币成功了
+            if (status.compareTo(BigInteger.ONE) == 0) {
+                result.put("hash", null);
+                result.put("status", "2");
+            }
+        } catch (Exception ignored) {}
         return result;
     }
 
