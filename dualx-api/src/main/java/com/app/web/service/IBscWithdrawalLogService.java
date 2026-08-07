@@ -24,7 +24,7 @@ public interface IBscWithdrawalLogService extends IService<BscWithdrawalLog> {
      * @param orderId 订单号
      * @return 包含hash和status的Map
      */
-    Map<String, String> getWithdrawalStatusByOrderId(String orderId,String contractAddress);
+    Map<String, String> getWithdrawalStatusByOrderId(String orderId);
 
     /**
      * 订单类型判断任务

@@ -6,7 +6,10 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -28,22 +31,18 @@ public class BscWithdrawalLogController {
     private IBscWithdrawalLogService bscWithdrawalLogService;
 
     /**
-     * 根据订单号和合约地址查询提现记录
+     * 根据id查询一条数据
      *
-     * @param orderId        订单号
-     * @param contractAddress 代币合约地址
-     * @return 提现状态
+     * @return map对象
      */
     @GetMapping("/{orderId}")
-    @Operation(summary = "根据订单号查询提现记录")
-    public Map<String, String> findOne(
-            @PathVariable("orderId") String orderId,
-            @RequestParam("contractAddress") String contractAddress) {
-
-        log.info("收到提现查询请求，orderId：{}，contractAddress：{}", orderId, contractAddress);
-        return bscWithdrawalLogService.getWithdrawalStatusByOrderId(orderId, contractAddress);
+    @Operation(summary ="根据ID查询提现记录表")
+    public Map<String, String> findOne(@PathVariable String orderId) {
+        log.info("收到查询请求ID为{}", orderId);
+        return bscWithdrawalLogService.getWithdrawalStatusByOrderId(orderId);
     }
 
 
+
 }
- 
+

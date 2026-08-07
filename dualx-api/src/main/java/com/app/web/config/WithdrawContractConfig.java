@@ -103,6 +103,9 @@ public class WithdrawContractConfig {
     @Value("${app.mq.enabled}")
     private Boolean useMq;
 
+    @Value("${app.env}")
+    private String env;
+
 
 
 }

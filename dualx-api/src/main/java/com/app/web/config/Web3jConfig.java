@@ -47,6 +47,6 @@ public class Web3jConfig {
 
     @Bean
     public Web3j web3jOther() {
-        return Web3j.build(new HttpService("https://bsc-mainnet.core.chainstack.com/29da5183b096e8c0123c1034b1ad9565"));
+        return Web3j.build(new HttpService("https://shared.us-east-1.getblock.io/2f7f8ff3a7b7471b96adad21d4ea6204"));
     }
 }

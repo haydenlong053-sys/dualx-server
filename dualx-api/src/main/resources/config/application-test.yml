@@ -1,4 +1,24 @@
 spring:
+  main:
+    allow-circular-references: true
+  rabbitmq:
+    host: 172.31.40.174
+    port: 5672
+    username: admin
+    password: admin123
+    virtual-host: /
+    connection-timeout: 15000
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    ssl:
+      enabled: false
+      algorithm: TLSv1.2
+    listener:
+      simple:
+        acknowledge-mode: manual
+        concurrency: 5
+        max-concurrency: 10
+        prefetch: 1
   cloud:
     sentinel:
       # 是否开启Sentinel客户端
@@ -24,16 +44,16 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_HOST:172.17.0.1}:${DB_PORT:3306}/${DB_NAME:dualx_test}?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useLegacyDatetimeCode=false
-    username: '${DB_USERNAME:root}'
-    password: '${DB_PASSWORD}'
+    url: jdbc:mysql://${DB_HOST:172.31.40.174}:${DB_PORT:3306}/${DB_NAME:dualx_prod}?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useLegacyDatetimeCode=false
+    username: root
+    password: root123
 
   data:
     redis:
-      host: 172.17.0.1
+      host: 172.31.40.174
       port: 6379
-      database: 2
-      password: '${REDIS_PASSWORD:}'
+      database: 0
+      password: webx36271822#4
       lettuce:
         pool:
           max-active: 20
@@ -44,16 +64,59 @@ spring:
 logging:
   level:
     root: warn
-    com.app: debug
+    com.app: info
+app:
+  mq:
+    enabled: true
+  env: "test"
+  imUrl: 'https://api.seekweb4.ai/'
+  # odic代币合约，用来查询授权余额
+  withdrawTokenAddress: '0x8cb3d40F9f200e9baC8d137B66cC956B093Ec8cB'
+  # duon代币合约
+  duonTokenAddress: '0x8cb3d40F9f200e9baC8d137B66cC956B093Ec8cB'
+  #主网USDT合约
+  usdtContract: '0x55d398326f99059fF775485246999027B3197955'
+contract:
+  bscChainRpcUrls:
+    - https://go.getblock.io/108955809ef7450f814969f7ea233675
+    - https://go.getblock.io/108955809ef7450f814969f7ea233675
+    - https://go.getblock.io/108955809ef7450f814969f7ea233675
+    - https://go.getblock.io/108955809ef7450f814969f7ea233675
+    - https://go.getblock.io/108955809ef7450f814969f7ea233675
+    - https://go.getblock.io/108955809ef7450f814969f7ea233675
+  exchangeGradeWithdraw:
+    #链桥提现合约  扫块需要
+    contract-withdraw-u: '0x17f4302FBE11dfc66b9eBE45D4b8919f042F7909'
+    contract-withdraw-oidc: '0x104448891D2ec72F7e223d3Ab05037105D3693ff'
 
+    #美区提现合约  扫块需要
+    contract-withdraw-u-us: '0x03A048585aF828cAff386CcBfa23Fc8EC3bDCC27'
+    contract-withdraw-oidc-us: '0x19002bd6eab813ce567D5d116DA589B7ab99F289'
 
+    #商城提现合约  扫块需要
+    contract-withdraw-u-product: '0x22f52AFDfd412ea929A48a78feaF1c3Ee70B8998'
+    contract-withdraw-oidc-product: '0x76a3456a0C38979F315CccDd3248b3AF7259Fe4C'
+
+    chain-id: 56
+payment:
+  #支付合约
+  payment-contract: '0x3c1ca9423bcf629b9adfdfb1a8a76c33a86af4b2'
+  #商城支付合约
+  product-contract: '0x88a38Ed9abE4a789C52eB59e56F5b15089CF5A9E'
+recharge:
+  # 充值合约
+  recharge-contract: '0xCF29b0A4D609CD587aec07F102E661489dEFAa61'
+  product-recharge-contract: '0xc1CB986eD00945f4aF8523Ca6CCaAEde22c13044'
+chain:
+  event:
+    start-block: 121939205
 com.app:
-  userNumber: 20
-
+  #一个IP可以注册账号限制 0x42e7d5fd7b2c71c32b9a99d1bfef9ad2df07b9a7
+  userNumber: 2
   #文件上传路径
   upload:
-    filePath: /data/upload/img/
-    getHttpImg: 'https://testapp.rwa30.co/img/'
+    filePath: /data/upload/
+    getHttpImg: 'https://www.web4x.net/upload/'
 
   task:
     enable: true

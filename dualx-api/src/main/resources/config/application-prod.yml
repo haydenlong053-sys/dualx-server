@@ -78,6 +78,7 @@ logging:
 app:
   mq:
     enabled: true
+  env: "prod"
   imUrl: 'https://api.seekweb4.ai/'
   # odic代币合约，用来查询授权余额
   withdrawTokenAddress: '0x8cb3d40F9f200e9baC8d137B66cC956B093Ec8cB'

@@ -51,6 +51,9 @@ public class MultiTokenPaymentServiceImpl implements IMultiTokenPaymentService {
     private Web3j web3j;
 
     @Resource
+    private Web3j web3jOther;
+
+    @Resource
     private WithdrawContractConfig withdrawContractConfig;
 
 
@@ -151,8 +154,9 @@ public class MultiTokenPaymentServiceImpl implements IMultiTokenPaymentService {
      */
     public BigDecimal getTokenPrice(String tokenAddress) {
         try {
+            Web3j web3j1 = withdrawContractConfig.getEnv().equals("test") ? web3jOther : web3j;
             // 1. 查询代币精度
-            int decimals = getTokenDecimals(tokenAddress);
+            int decimals = getTokenDecimals(tokenAddress, web3j1);
             if (decimals == 0) {
                 log.warn("获取代币精度失败, tokenAddress={}", tokenAddress);
                 return null;
@@ -174,7 +178,7 @@ public class MultiTokenPaymentServiceImpl implements IMultiTokenPaymentService {
             );
 
             String encodedFunction = FunctionEncoder.encode(function);
-            EthCall response = web3j.ethCall(
+            EthCall response = web3j1.ethCall(
                     Transaction.createEthCallTransaction(null, SysConfigConstants.PANCAKE_ROUTER, encodedFunction),
                     DefaultBlockParameterName.LATEST
             ).send();
@@ -287,11 +291,16 @@ public class MultiTokenPaymentServiceImpl implements IMultiTokenPaymentService {
                 String token = "0x" + topics.get(2).substring(26);
                 String receiver = "0x" + topics.get(3).substring(26);
                 List<TypeReference<Type>> parameters = Arrays.asList(
-                        typeRef(new TypeReference<Utf8String>() {}),
-                        typeRef(new TypeReference<Uint256>() {}),
-                        typeRef(new TypeReference<Uint256>() {}),
-                        typeRef(new TypeReference<Uint256>() {}),
-                        typeRef(new TypeReference<Uint256>() {})
+                        typeRef(new TypeReference<Utf8String>() {
+                        }),
+                        typeRef(new TypeReference<Uint256>() {
+                        }),
+                        typeRef(new TypeReference<Uint256>() {
+                        }),
+                        typeRef(new TypeReference<Uint256>() {
+                        }),
+                        typeRef(new TypeReference<Uint256>() {
+                        })
                 );
 
                 List<Type> decodedData = FunctionReturnDecoder.decode(event.getData(), parameters);
@@ -336,7 +345,6 @@ public class MultiTokenPaymentServiceImpl implements IMultiTokenPaymentService {
             return BaseResult.success("查询异常", result);
         }
     }
-
 
 
     /**
@@ -402,7 +410,7 @@ public class MultiTokenPaymentServiceImpl implements IMultiTokenPaymentService {
     /**
      * 查询代币精度
      */
-    private int getTokenDecimals(String tokenAddress) throws Exception {
+    private int getTokenDecimals(String tokenAddress, Web3j web3j) throws Exception {
         String encodedFunction = FunctionEncoder.encode(
                 new Function("decimals", Collections.emptyList(), Collections.emptyList())
         );

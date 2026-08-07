@@ -54,7 +54,7 @@ public class BscWithdrawalLogServiceImpl extends ServiceImpl<BscWithdrawalLogMap
 
 
     @Override
-    public Map<String, String> getWithdrawalStatusByOrderId(String orderId,String contractAddress) {
+    public Map<String, String> getWithdrawalStatusByOrderId(String orderId) {
         log.info("查询提现记录状态，订单号: {}", orderId);
         Map<String, String> result = new HashMap<>();
         result.put("status","1");
@@ -76,15 +76,6 @@ public class BscWithdrawalLogServiceImpl extends ServiceImpl<BscWithdrawalLogMap
             result.put("status", status);
             return result;
         }
-        //直接查链上
-        try {
-            BigInteger status = accessControlService.getOrderStatus(new BigInteger(orderId), contractAddress);
-            //说明发币成功了
-            if (status.compareTo(BigInteger.ONE) == 0) {
-                result.put("hash", null);
-                result.put("status", "2");
-            }
-        } catch (Exception ignored) {}
         return result;
     }
 
